@@ -1,0 +1,19 @@
+namespace: DFL-Technology
+name: ansible-collection-freetakserver
+version: 1.0.0
+readme: README.md
+authors:
+- Jon Augustine <jon.augustine@dfltechnology.com>
+- Jim Carlson <jim.carlson@dfltechnology.com>
+description: FreeTAKServer 
+license_file: LICENSE
+tags:
+- freetakserver
+- tak
+- takserver
+dependencies: {}
+repository: https://github.com/DFL-Technology/freetakserver-ansible
+documentation: http://docs.example.com
+homepage: https://github.com/DFL-Technology/freetakserver-ansible
+issues: https://github.com/DFL-Technology/freetakserver-ansible/issues
+build_ignore: []

@@ -1,1 +1,3 @@
-# ansible-collection-freetakserver
+# Ansible Collection - dfltechnology.freetakserver
+
+Documentation for the collection.
