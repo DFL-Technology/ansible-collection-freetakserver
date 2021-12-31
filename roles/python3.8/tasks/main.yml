@@ -46,7 +46,7 @@
     chdir: /opt/Python-3.8.0
   with_items:
     - ./configure --enable-optimizations
-    - make -j"{{ ansible_processor_nproc }}"
+    - make -j{{ ansible_processor_nproc }}
     - make altinstall
   become: yes
   changed_when: false

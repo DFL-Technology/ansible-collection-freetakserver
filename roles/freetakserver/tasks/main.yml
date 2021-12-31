@@ -1,6 +1,76 @@
 ---
-- name: Install FreeTAK Server
-  include_tasks: install.yml
+- name: Hack to update
+  command: apt-get --allow-releaseinfo-change update
+  # noqa 303
+  changed_when: false
 
-- name: Configure FreeTAK Server
-  include_tasks: configure.yml
+- name: Upgrade apt packages
+  become: true
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+
+- name: Install dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-dev
+    - python3-setuptools
+    - build-essential
+    - python3-gevent
+    - python3-lxml
+    - libcairo2-dev
+    - python3-pip
+
+- name: Install pip dependencies
+  pip:
+    name: pycairo
+
+- name: Uninstall any previous FreeTAKServer installations
+  pip:
+    name: FreeTAKServer
+    state: absent
+    executable: pip3
+
+- name: Install FreeTAKServer
+  pip:
+    name: FreeTAKServer
+    executable: pip3
+
+- name: Enable FreeTAKServer service
+  service:
+    name: fts
+    enabled: yes
+
+- name: Start FreeTAKServer service
+  service:
+    name: fts
+    state: started
+
+- name: Edit MainConfig so FirstStart is false
+  lineinfile:
+    path: '{{ fts_installation_path }}/controllers/configuration/MainConfig.py'
+    regexp: 'first_start = True'
+    line: 'first_start = False'
+    backrefs: yes
+
+- name: Template FTSConfig.yml config file
+  template:
+    src: FTSConfig.yml
+    dest: /opt/FTSConfig.yml
+    mode: 0644
+
+- name: Update FTSConfig.yml with IPv4
+  replace:
+    path: /opt/FTSConfig.yml
+    regexp: '0.0.0.0'
+    replace: "'{{ hostvars['mainNode'].ansible_host }}'"
+
+- name: Template unit file for FreeTAK Server
+  template:
+    src: fts.service.j2
+    dest: /lib/systemd/system/fts.service
+    mode: 0644
+  notify:
+    - reload systemctl
