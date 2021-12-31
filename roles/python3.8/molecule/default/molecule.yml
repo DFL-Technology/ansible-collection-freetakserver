@@ -15,3 +15,26 @@ lint: |
   set -e
   yamllint .
   ansible-lint .
+scenario:
+  create_sequence:
+    - create
+  check_sequence:
+    - destroy
+    - create
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - create
+    - converge
+  destroy_sequence:
+    - destroy
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify
+    - destroy

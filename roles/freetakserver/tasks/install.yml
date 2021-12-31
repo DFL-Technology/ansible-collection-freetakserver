@@ -1,0 +1,112 @@
+---
+# TODO: Debian install only
+- name: Hack to update
+  command: apt-get --allow-releaseinfo-change update
+  # noqa 303
+  changed_when: false
+
+# TODO: Debian install only
+- name: Upgrade apt packages
+  become: true
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+
+- name: Install dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - git
+    - python3-pip
+    - python3-venv
+    - python3-setuptools
+    - python3.8-dev
+
+- name: Uninstall any previous FreeTAKServer installations
+  pip:
+    name: FreeTAKServer
+    state: absent
+    executable: pip3.8
+
+- name: Clone FreeTAKServer repository
+  git:
+    repo: https://github.com/FreeTAKTeam/FreeTakServer.git
+    dest: /root/FreeTakServer
+    version: 06588f3
+
+# - name: Create virtual environment
+#   pip:
+#     name: /root/FreeTakServer
+#     virtualenv: /root/FreeTakServer/.env
+#     virtualenv_command: python3.8 -m venv
+
+- name: Install dependencies
+  pip:
+    executable: pip3.8
+    # virtualenv: /root/FreeTakServer/.env
+    name: "{{ item }}"
+  loop:
+    - gevent
+    - lxml
+    - pycairo
+
+# - name: Upgrade virtual environment
+#   pip:
+    # virtualenv: /root/FreeTakServer/.env
+    # name: pip3.8
+    # extra_args: --upgrade
+
+# - name: Upgrade virtual environment setuptools
+#   pip:
+    # virtualenv: /root/FreeTakServer/.venv
+    # name: setuptools
+    # extra_args: --upgrade
+
+# - name: Install FreeTAK Server   
+#   pip: 
+#     - name: /root/FreeTakServer
+#     - extra_args: -e
+    # - virtualenv: /root/FreeTakServer/.venv
+
+- name: Install FreeTakServer setup.py
+  command: python3.8 /root/FreeTakServer/setup.py install
+  # noqa 303
+  changed_when: false
+
+- name: Edit MainConfig so FirstStart is false
+  lineinfile:
+    path: '{{ fts_installation_path }}/controllers/configuration/MainConfig.py'
+    regexp: 'first_start = True'
+    line: '    first_start = False'
+    backrefs: yes
+
+- name: Template FTSConfig.yml config file
+  template:
+    src: FTSConfig.yml
+    dest: /opt/FTSConfig.yml
+    mode: 0644
+
+- name: Update FTSConfig.yml with IPv4
+  replace:
+    path: /opt/FTSConfig.yml
+    regexp: '0.0.0.0'
+    replace: "'{{ hostvars['mainNode'].ansible_host }}'"
+
+- name: Template FTS unit file
+  template:
+    src: fts.service.j2
+    dest: /lib/systemd/system/fts.service
+    mode: 0644
+  notify:
+    - reload systemctl
+
+- name: Enable FreeTAKServer service
+  service:
+    name: fts
+    enabled: yes
+
+- name: Start FreeTAKServer service
+  service:
+    name: fts
+    state: started
