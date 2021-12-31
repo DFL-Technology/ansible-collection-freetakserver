@@ -12,8 +12,8 @@ tags:
 - tak
 - takserver
 dependencies: {}
-repository: https://github.com/DFL-Technology/freetakserver-ansible
+repository: https://github.com/DFL-Technology/ansible-collection-freetakserver
 documentation: http://docs.example.com
-homepage: https://github.com/DFL-Technology/freetakserver-ansible
-issues: https://github.com/DFL-Technology/freetakserver-ansible/issues
+homepage: https://github.com/DFL-Technology/ansible-collection-freetakserver
+issues: https://github.com/DFL-Technology/ansible-collection-freetakserver/issues
 build_ignore: []
