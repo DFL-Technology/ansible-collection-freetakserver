@@ -1,4 +1,4 @@
-namespace: DFL-Technology
+namespace: dfl_technology
 name: ansible-collection-freetakserver
 version: 1.0.0
 readme: README.md

@@ -1,2 +1,6 @@
 ---
-# tasks file for freetakserver
+- name: Install FreeTAK Server
+  include_tasks: install.yml
+
+- name: Configure FreeTAK Server
+  include_tasks: configure.yml

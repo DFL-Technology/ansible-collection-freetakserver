@@ -1,11 +1,10 @@
 ---
-dependencies:
-  - python3.8
+dependencies: []
 galaxy_info:
   namespace: dfl_technology
   role_name: freetakserver
   author: jonaugustine
-  description: FreeTAKServer Ansible Role
+  description: Python 3.8 Ansible Role
   company: DFL-Technology
   license: license (EPL-2.0)
   min_ansible_version: 2.1
@@ -14,6 +13,6 @@ galaxy_info:
       versions:
       - all
   galaxy_tags:
-    - freetakserver
-    - tak
-    - takserver
+    - python
+    - python3
+    - python38

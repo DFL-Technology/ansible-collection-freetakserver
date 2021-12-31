@@ -1,2 +1,5 @@
 ---
-# handlers file for freetakserver
+- name: reload systemctl
+  systemd:
+    name: daemon-reload
+    state: reloaded
