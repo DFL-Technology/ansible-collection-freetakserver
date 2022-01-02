@@ -1,0 +1,14 @@
+[Unit]
+Description=FreeTAKServer service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+WorkingDirectory={{ exec_path }}
+ExecStart=/usr/bin{{ python_version }} -m FreeTAKServer.controllers.services.FTS
+
+[Install]
+WantedBy=multi-user.target

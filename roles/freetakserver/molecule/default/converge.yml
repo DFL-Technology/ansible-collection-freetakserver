@@ -1,7 +1,12 @@
 ---
 - name: Converge
   hosts: all
+  gather_facts: yes
   tasks:
-    - name: "Include freetakserver"
+    - name: Get IPv4
+      debug:
+        var: ansible_default_ipv4
+        verbosity: 0
+    - name: Include freetakserver
       include_role:
-        name: "freetakserver"
+        name: freetakserver

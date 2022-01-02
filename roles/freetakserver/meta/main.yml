@@ -1,6 +1,5 @@
 ---
-dependencies:
-  - python3.8
+dependencies: []
 galaxy_info:
   namespace: dfl_technology
   role_name: freetakserver

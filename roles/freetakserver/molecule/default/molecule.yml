@@ -4,9 +4,13 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance
-    image: docker.io/pycontribs/debian:latest
+  - name: ubuntu
+    image: docker.io/pycontribs/ubuntu:latest
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
     pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
 verifier:

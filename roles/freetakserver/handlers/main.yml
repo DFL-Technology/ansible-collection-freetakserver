@@ -1,5 +1,4 @@
 ---
 - name: reload systemctl
-  systemd:
-    name: daemon-reload
-    state: reloaded
+  command: systemctl daemon-reload
+  # noqa 303

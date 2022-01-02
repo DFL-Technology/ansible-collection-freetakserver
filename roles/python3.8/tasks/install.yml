@@ -1,14 +1,9 @@
 ---
-- name: Hack to apt update
-  command: apt-get --allow-releaseinfo-change update
+- name: Workaround to allow release-info to change for APT repositories
+  command: apt-get update -y --allow-releaseinfo-change
   # noqa 303
+  when: ansible_os_family == "Debian"
   changed_when: false
-
-- name: Upgrade apt packages from distribution
-  become: true
-  apt:
-    upgrade: dist
-    force_apt_get: yes
 
 - name: Install dependencies
   package:

@@ -1,4 +1,6 @@
 ---
 - name: Install Python 3.8.0
   import_tasks: install.yml
-  tags: freetakserver
+  tags:
+    - freetakserver
+    - install_freetakserver
