@@ -1,84 +1,60 @@
 ---
-- name: Update apt packages
-  become: yes
-  apt:
-    update_cache: yes
-    cache_valid_time: 86400
+- name: Install, configure, and start FreeTAKServer
+  block:
+    - name: Update apt packages
+      become: yes
+      apt:
+        update_cache: yes
+        cache_valid_time: 86400
 
-- name: Install dependencies
-  package:
-    name: '{{ item }}'
-    state: present
-  loop:
-    - python3.8
-    - python3.8-venv
-    - python3-setuptools
-    - python3-pip
-    - python3-dev
-    - python3.8-gevent
-    - python3-lxml
-    - python3-psutil
-    - build-essential
-    - iproute2
-    - libcairo2-dev
-    - systemd
-    - git
-    - netbase
+    - name: Install dependencies
+      package:
+        name: '{{ item }}'
+        state: present
+      loop:
+        - python3.8
+        - python3-dev
+        - python3.8-venv
+        - python3-setuptools
+        - python3-pip
+        - python3.8-gevent
+        - python3-lxml
+        - libcairo2-dev
+        - git
+        - netbase
+      when:
+        - ansible_distribution == "Ubuntu"
 
-# - name: Install dependencies
-#   pip:
-#     name: '{{ item }}'
-#     executable: pip3
-#   loop:
-#     - gevent
-#     - eventlet
-#     - gunicorn
+    - name: Clone FreeTAKServer repository
+      git:
+        repo: https://github.com/FreeTAKTeam/FreeTakServer.git
+        dest: '{{ repo_path }}'
+        version: 06588f3
+        force: yes
 
-- name: Uninstall any previous FreeTAKServer installations
-  pip:
-    name: FreeTAKServer
-    state: absent
-    executable: pip3
+    - name: Install FreeTakServer
+      pip:
+        name: '{{ repo_path }}'
+        executable: pip3
 
-- name: Clone FreeTAKServer repository
-  git:
-    repo: https://github.com/FreeTAKTeam/FreeTakServer.git
-    dest: '{{ repo_path }}'
-    version: 06588f3
-    force: yes
+    - name: Edit MainConfig so FirstStart is false
+      lineinfile:
+        path: '{{ repo_path }}/FreeTAKServer/controllers/configuration/MainConfig.py'
+        regexp: 'first_start = True'
+        line: '    first_start = False'
+        backrefs: yes
 
-# - name: Build FreeTakServer
-#   command: 'python3.8 {{ repo_path }}/setup.py build'
-#   # noqa 303
-#   changed_when: false
+    - name: Template FTSConfig.yml config file
+      template:
+        src: FTSConfig.yml.j2
+        dest: /opt/FTSConfig.yml
+        mode: 0644
+    - name: Start FreeTakServer
+      command: 'python3.8 -m FreeTAKServer.controllers.services.FTS'
+      # noqa 303
+      changed_when: false
 
-- name: Install FreeTakServer
-  command: 'pip3 install .'
-  # noqa 303
-  args:
-    chdir: '{{ repo_path }}'
-  changed_when: false
-
-# - name: Install requirements
-#   pip:
-#     chdir: '{{ repo_path }}'
-#     requirements: '{{ repo_path }}/requirements.txt'
-#     # virtualenv: '{{ repo_path }}/.env'
-#     # virtualenv_command: python3.8 -m venv
-#     # virtualenv_site_packages: yes
-
-- name: Edit MainConfig so FirstStart is false
-  lineinfile:
-    path: '{{ repo_path }}/FreeTAKServer/controllers/configuration/MainConfig.py'
-    regexp: 'first_start = True'
-    line: '    first_start = False'
-    backrefs: yes
-
-- name: Template FTSConfig.yml config file
-  template:
-    src: FTSConfig.yml.j2
-    dest: /opt/FTSConfig.yml
-    mode: 0644
+  when: uninstall is not defined
 
 # - name: Template FTS unit file
 #   template:
@@ -86,7 +62,9 @@
 #     dest: /etc/systemd/system/freetakserver.service
 #     mode: 0755
 
-- name: Start FreeTakServer
-  command: 'python3.8 -m FreeTAKServer.controllers.services.FTS'
-  # noqa 303
-  changed_when: false
+- name: Uninstall any previous FreeTAKServer installations
+  pip:
+    name: FreeTAKServer
+    state: absent
+    executable: pip3
+  when: uninstall is defined and uninstall
