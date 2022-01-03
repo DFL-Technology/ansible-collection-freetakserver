@@ -10,7 +10,7 @@ name: CI
 
 defaults:
   run:
-    working-directory: 'dfl_technology.freetakserver'
+    working-directory: 'dfl_technology.ansible-collection-freetakserver.roles.freetakserver'
 
 jobs:
 
@@ -21,7 +21,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
         with:
-          path: 'dfl_technology.freetakserver'
+          path: 'dfl_technology.ansible-collection-freetakserver.roles.freetakserver'
 
       - name: Set up Python 3
         uses: actions/setup-python@v2
@@ -47,7 +47,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
         with:
-          path: 'dfl_technology.freetakserver'
+          path: 'dfl_technology.ansible-collection-freetakserver.roles.freetakserver'
 
       - name: Set up Python 3.
         uses: actions/setup-python@v2
