@@ -57,16 +57,9 @@ jobs:
       - name: Install test dependencies
         run: pip install ansible molecule[docker] docker
 
-      - name: Run Molecule test on with ubuntu1804
-        run: molecule test
+      - name: Run Molecule tests
+        run: molecule test --all
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ubuntu1804
-
-      - name: Run Molecule test on with ubuntu2004
-        run: molecule test
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ubuntu2004
+          MOLECULE_DISTRO: ${{ matrix.molecule_distro }}
