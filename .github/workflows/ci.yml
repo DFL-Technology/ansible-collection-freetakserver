@@ -29,7 +29,7 @@ jobs:
           python-version: '3.8'
 
       - name: Install test dependencies.
-        run: /usr/bin/pip3 install yamllint
+        run: pip install yamllint
 
       - name: Lint code.
         run: |
@@ -55,7 +55,7 @@ jobs:
           python-version: '3.8'
 
       - name: Install test dependencies.
-        run: /usr/local/bin/pip3 install ansible molecule[docker] docker
+        run: pip install ansible molecule[docker] docker
 
       - name: Run Molecule tests.
         run: molecule test
