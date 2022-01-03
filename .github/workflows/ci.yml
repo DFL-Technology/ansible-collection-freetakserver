@@ -10,7 +10,7 @@ name: CI
 
 defaults:
   run:
-    working-directory: 'geerlingguy.apache'
+    working-directory: 'dfl_technology.freetakserver'
 
 jobs:
 
@@ -26,7 +26,7 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.x'
 
       - name: Install test dependencies.
         run: pip install yamllint
@@ -52,7 +52,7 @@ jobs:
       - name: Set up Python 3.
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.x'
 
       - name: Install test dependencies.
         run: pip install ansible molecule[docker] docker
