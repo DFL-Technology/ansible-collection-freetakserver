@@ -5,15 +5,16 @@ driver:
   name: docker
 platforms:
   - name: ubuntu
-    image: geerlingguy/docker-ubuntu2004-ansible:latest
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    image: geerlingguy/docker-ubuntu1804-ansible:latest
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
     pre_build_image: true
-    net: host
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 verifier:
   name: ansible
 lint: |

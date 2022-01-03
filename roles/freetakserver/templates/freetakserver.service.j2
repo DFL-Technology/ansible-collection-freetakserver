@@ -7,7 +7,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-WorkingDirectory={{ exec_path }}
+# WorkingDirectory={{ exec_path }}
 ExecStart=/usr/bin{{ python_version }} -m FreeTAKServer.controllers.services.FTS
 
 [Install]
