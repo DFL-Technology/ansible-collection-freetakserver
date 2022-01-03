@@ -1,3 +1,5 @@
 #!/bin/sh
 
+# Start the server
 {{ python_version }} -m FreeTAKServer.controllers.services.FTS
+{{ python_version }} -m FreeTAKServer-UI.run
