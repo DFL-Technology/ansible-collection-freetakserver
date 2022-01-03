@@ -10,7 +10,7 @@ name: CI
 
 defaults:
   run:
-    working-directory: 'dfl_technology.ansible-collection-freetakserver.roles.freetakserver'
+    working-directory: 'dfl_technology.ansible-collection-freetakserver'
 
 jobs:
 
