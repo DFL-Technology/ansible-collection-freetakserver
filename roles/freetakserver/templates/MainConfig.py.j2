@@ -26,7 +26,7 @@ class MainConfig:
         ip = s.getsockname()[0]
         s.close()
     except:
-        ip = "0.0.0.0"
+        ip = {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}
 
     if not os.path.exists(yaml_path):
 
@@ -58,23 +58,21 @@ class MainConfig:
         SaveCoTToDB = bool(os.environ.get('FTS_COT_TO_DB', True))
 
         # this should be set before startup
-        DBFilePath = str(os.environ.get('FTS_DB_PATH', r'/opt/FTSDataBase.db'))
+        DBFilePath = 'opt/FTSDataBase.db'
 
-        MainPath = str(os.environ.get("FTS_MAINPATH", Path(fr'{userpath}{python_version}/dist-packages/FreeTAKServer')))
+        MainPath = '{{ exec_path }}'
 
-        certsPath = str(os.environ.get('FTS_CERTS_PATH', fr'{MainPath}/certs'))
+        certsPath = '{{ exec_path }}/certs'
 
-        ExCheckMainPath = str(os.environ.get('FTS_EXCHECK_PATH', Path(fr'{MainPath}/ExCheck')))
+        ExCheckMainPath = '{{ exec_path }}/ExCheck'
 
-        ExCheckFilePath = str(os.environ.get('FTS_EXCHECK_TEMPLATE_PATH', Path(fr'{MainPath}/ExCheck/template')))
+        ExCheckFilePath = '{{ exec_path }}/ExCheck/template'
 
-        ExCheckChecklistFilePath = str(
-            os.environ.get("FTS_EXCHECK_CHECKLIST_PATH", Path(fr'{MainPath}/ExCheck/checklist')))
+        ExCheckChecklistFilePath = '{{ exec_path }}/ExCheck/checklist'
 
-        DataPackageFilePath = str(
-            os.environ.get("FTS_DATAPACKAGE_PATH", Path(fr'{MainPath}/FreeTAKServerDataPackageFolder')))
+        DataPackageFilePath = '{{ exec_path }}/FreeTAKServerDataPackageFolder'
 
-        LogFilePath = str(os.environ.get("FTS_LOGFILE_PATH", Path(fr"{MainPath}/Logs")))
+        LogFilePath = '{{ exec_path }}/Logs'
 
         federationKeyPassword = str(os.environ.get('FTS_FED_PASSWORD', 'defaultpass'))
 
@@ -150,7 +148,7 @@ class MainConfig:
             FederationPort = int(os.environ.get('FTS_FED_PORT', yamlConfig["Addresses"].get("FTS_FED_PORT", 9000)))
 
             # api IP
-            APIIP = str(os.environ.get('FTS_API_ADDRESS', yamlConfig["Addresses"].get("FTS_API_ADDRESS", "0.0.0.0")))
+            APIIP = {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}
         else:
 
             # this is the port to which clients will connect

@@ -15,20 +15,24 @@
     - python3-setuptools
     - python3-pip
     - python3-dev
-    - python3-gevent
+    - python3.8-gevent
     - python3-lxml
     - python3-psutil
     - build-essential
     - iproute2
     - libcairo2-dev
     - systemd
+    - git
+    - netbase
 
-- name: Install dependencies
-  pip:
-    name: '{{ item }}'
-    executable: pip3
-  loop:
-    - greenlet
+# - name: Install dependencies
+#   pip:
+#     name: '{{ item }}'
+#     executable: pip3
+#   loop:
+#     - gevent
+#     - eventlet
+#     - gunicorn
 
 - name: Uninstall any previous FreeTAKServer installations
   pip:
@@ -43,17 +47,25 @@
     version: 06588f3
     force: yes
 
-- name: Build FreeTakServer
-  command: 'python3.8 {{ repo_path }}/setup.py build'
-  # noqa 303
-  changed_when: false
+# - name: Build FreeTakServer
+#   command: 'python3.8 {{ repo_path }}/setup.py build'
+#   # noqa 303
+#   changed_when: false
 
 - name: Install FreeTakServer
-  command: 'python3.8 setup.py install'
+  command: 'pip3 install .'
   # noqa 303
   args:
     chdir: '{{ repo_path }}'
   changed_when: false
+
+# - name: Install requirements
+#   pip:
+#     chdir: '{{ repo_path }}'
+#     requirements: '{{ repo_path }}/requirements.txt'
+#     # virtualenv: '{{ repo_path }}/.env'
+#     # virtualenv_command: python3.8 -m venv
+#     # virtualenv_site_packages: yes
 
 - name: Edit MainConfig so FirstStart is false
   lineinfile:

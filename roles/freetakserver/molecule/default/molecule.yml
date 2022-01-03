@@ -5,9 +5,10 @@ driver:
   name: docker
 platforms:
   - name: ubuntu
-    image: docker.io/pycontribs/ubuntu:latest
+    image: geerlingguy/docker-ubuntu2004-ansible:latest
     docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
     pre_build_image: true
+    net: host
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
