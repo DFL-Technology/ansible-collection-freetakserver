@@ -1,6 +1,7 @@
 ---
 name: CI
-'on':
+
+on:
   pull_request:
   push:
     branches:
@@ -13,42 +14,26 @@ defaults:
     working-directory: 'dfl_technology.ansible-collection-freetakserver'
 
 jobs:
-
-  # lint:
-  #   name: Lint
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check out the codebase.
-  #       uses: actions/checkout@v2
-  #       with:
-  #         path: 'dfl_technology.ansible-collection-freetakserver'
-
-  #     - name: Set up Python 3
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: '3.x'
-
-  #     - name: Install test dependencies.
-  #       run: pip install yamllint
-
-  #     - name: Lint code.
-  #       run: |
-  #         yamllint .
-
   molecule:
     name: Molecule Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       max-parallel: 4
       matrix:
-        molecule_distro: 
-          - ubuntu
+        distros: 
+          # - geerlingguy/docker-centos7-ansible:latest
+          # - geerlingguy/docker-centos8-ansible:latest
+          - geerlingguy/docker-ubuntu2004-ansible:latest
+          - geerlingguy/docker-ubuntu1804-ansible:latest
+          - geerlingguy/docker-ubuntu1604-ansible:latest
+          # - geerlingguy/docker-debian11-ansible:latest
+          # - geerlingguy/docker-debian10-ansible:latest
+          # - geerlingguy/docker-debian9-ansible:latest
+          # - geerlingguy/docker-fedora31-ansible:latest
     steps:
       - name: Check out the codebase
         uses: actions/checkout@v2
-        with:
-          path: 'dfl_technology.ansible-collection-freetakserver'
 
       - name: Set up Python 3
         uses: actions/setup-python@v2
@@ -58,14 +43,9 @@ jobs:
       - name: Install test dependencies
         run: pip install ansible molecule[docker] docker
 
-      - name: Run Molecule test on Ubuntu 18.04
-        run: MOLECULE_DISTRO=ubuntu1804 molecule test 
+      - name: Run Molecule tests --scenario-name default
+        run: molecule test
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-
-      - name: Run Molecule test on Ubuntu 20.04
-        run: MOLECULE_DISTRO=ubuntu2004 molecule test 
-        env:
+          MOLECULE_DISTRO: "${{ matrix.distros }}"
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
