@@ -1,5 +1,7 @@
 ---
-- name: Restart freetakserver
+- name: systemctl daemon_reload
   service:
     name: freetakserver
+    enabled: yes
     state: restarted
+    daemon_reload: true

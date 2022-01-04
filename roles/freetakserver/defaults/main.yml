@@ -4,6 +4,8 @@ fts_python_version: 3.8
 fts_python: "python{{ fts_python_version }}"
 
 # FreeTAKServer configuration
+fts_repo_url: https://github.com/FreeTAKTeam/FreeTakServer.git
+fts_pip_install_url: https://bootstrap.pypa.io/get-pip.py
 fts_release_version: v1.9.8
 fts_package_path: "/usr/local/lib/{{ fts_python }}/dist-packages/FreeTAKServer"
 fts_repo_path: /opt/FreeTAKServer

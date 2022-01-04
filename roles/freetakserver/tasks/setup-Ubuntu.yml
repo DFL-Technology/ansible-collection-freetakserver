@@ -30,7 +30,7 @@
   block:
     - name: Download get-pip.py.
       get_url:
-        url: https://bootstrap.pypa.io/get-pip.py
+        url: "{{ fts_pip_install_url }}"
         dest: /tmp
         mode: 0644
       when: not pip_executable.stat.exists
@@ -55,6 +55,12 @@
     - greenlet
   changed_when: false
 
+- name: Copy systemctl replacement workaround.
+  copy:
+    src: systemctl3.py
+    dest: /usr/local/bin/systemctl
+    mode: 0755
+
 - name: Check if FreeTAKServer is installed.
   shell: >
     set -o pipefail &&
@@ -73,15 +79,15 @@
     state: absent
     executable: pip3
   when:
-    - uninstall is defined
-    - uninstall
+    - uninstall_fts is defined
+    - uninstall_fts
     - result.stdout | length > 0
 
 - name: Install FreeTAKServer
   block:
     - name: Clone FreeTAKServer repository.
       git:
-        repo: https://github.com/FreeTAKTeam/FreeTakServer.git
+        repo: "{{ fts_repo_url }}"
         dest: "{{ fts_repo_path }}"
         version: "{{ fts_release_version }}"
         force: yes
@@ -103,14 +109,11 @@
         dest: /opt/FTSConfig.yml
         mode: 0644
 
-    - name: Template freetakserver.sh startup file.
+    - name: Template FreeTAKServer systemd unit file.
       template:
-        src: start_freetakserver.sh.j2
-        dest: /root/start_freetakserver.sh
-        mode: 0755
+        src: freetakserver.service.j2
+        dest: /lib/systemd/system/freetakserver.service
+        mode: 0644
+      notify: systemctl daemon_reload
 
   when: result.stdout | length == 0
-
-- name: Start FreeTAKServer.
-  command: "{{ fts_python }} -m FreeTAKServer.controllers.services.FTS"
-  changed_when: false
