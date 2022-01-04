@@ -1,6 +1,12 @@
 ---
-python_version: python3.8
-repo_path: /root/FreeTAKServer
-venv_path: '{{ repo_path }}/.env'
-exec_path: '/usr/local/lib/{{ python_version }}/dist-packages/FreeTAKServer'
-connection_message: 'FreeTAKServer'
+# Python configuration
+fts_python_version: 3.8
+fts_python: "python{{ fts_python_version }}"
+
+# FreeTAKServer configuration
+fts_release_version: v1.9.8
+fts_package_path: "/usr/local/lib/{{ fts_python }}/dist-packages/FreeTAKServer"
+fts_repo_path: /opt/FreeTAKServer
+fts_connection_message: FreeTAKServer
+fts_venv_path: "{{ fts_repo_path }}/.env"
+fts_first_start: False

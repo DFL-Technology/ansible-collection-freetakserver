@@ -1,0 +1,116 @@
+---
+- name: Update apt packages.
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  register: update
+  retries: 5
+  until: update is success
+
+- name: Install FreeTAKServer apt dependencies.
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - netbase
+    - git
+    - python3.8
+    - python3-distutils
+    - python3-setuptools
+    - build-essential
+    - python3.8-dev
+    - libcairo2-dev
+
+- name: "Check if pip{{ fts_python_version }} is installed."
+  stat:
+    path: "/usr/local/bin/pip{{ fts_python_version }}"
+  register: pip_executable
+
+- name: "Install pip{{ fts_python_version }}."
+  block:
+    - name: Download get-pip.py.
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp
+        mode: 0644
+      when: not pip_executable.stat.exists
+
+    - name: "Install pip{{ fts_python_version }}."
+      command: "{{ fts_python }} /tmp/get-pip.py"
+      changed_when: false
+
+    - name: "Upgrade pip{{ fts_python_version }}."
+      command: pip3 install --upgrade pip
+      changed_when: false
+
+  when: not pip_executable.stat.exists
+
+- name: Install pip dependencies.
+  command: "pip{{ fts_python_version }} install --force-reinstall --ignore-installed {{ item }}"
+  loop:
+    - virtualenv
+    - lxml
+    - pycairo
+    - gevent
+    - greenlet
+  changed_when: false
+
+- name: Check if FreeTAKServer is installed.
+  shell: >
+    set -o pipefail &&
+    pip{{ fts_python_version }} list |
+    grep FreeTAKServer
+  args:
+    warn: no
+    executable: /bin/bash
+  register: result
+  changed_when: false
+  ignore_errors: yes
+
+- name: Uninstall any previous FreeTAKServer installations.
+  pip:
+    name: FreeTAKServer
+    state: absent
+    executable: pip3
+  when:
+    - uninstall is defined
+    - uninstall
+    - result.stdout | length > 0
+
+- name: Install FreeTAKServer
+  block:
+    - name: Clone FreeTAKServer repository.
+      git:
+        repo: https://github.com/FreeTAKTeam/FreeTakServer.git
+        dest: "{{ fts_repo_path }}"
+        version: "{{ fts_release_version }}"
+        force: yes
+
+    - name: Install FreeTAKServer.
+      pip:
+        name: "{{ fts_repo_path }}"
+        executable: "pip{{ fts_python_version }}"
+
+    - name: Template MainConfig.py config file.
+      template:
+        src: MainConfig.py.j2
+        dest: '{{ fts_repo_path }}/FreeTAKServer/controllers/configuration/MainConfig.py'
+        mode: 0644
+
+    - name: Template FTSConfig.yml config file.
+      template:
+        src: FTSConfig.yml.j2
+        dest: /opt/FTSConfig.yml
+        mode: 0644
+
+    - name: Template freetakserver.sh startup file.
+      template:
+        src: start_freetakserver.sh.j2
+        dest: /root/start_freetakserver.sh
+        mode: 0755
+
+  when: result.stdout | length == 0
+
+- name: Start FreeTAKServer.
+  command: "{{ fts_python }} -m FreeTAKServer.controllers.services.FTS"
+  changed_when: false

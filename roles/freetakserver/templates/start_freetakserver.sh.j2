@@ -1,5 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 
-# Start the server
-{{ python_version }} -m FreeTAKServer.controllers.services.FTS
-{{ python_version }} -m FreeTAKServer-UI.run
+# Start the server and its dependencies
+{{ fts_python_version }} -m FreeTAKServer.controllers.services.FTS
+{{ fts_python_version }} -m FreeTAKServer-UI.run

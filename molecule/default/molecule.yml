@@ -25,7 +25,7 @@ scenario:
   create_sequence:
     - create
   check_sequence:
-    - destroy
+    # - destroy
     - create
     - converge
     - check
@@ -37,10 +37,10 @@ scenario:
     - destroy
   test_sequence:
     # - lint
-    - destroy
-    - syntax
+    # - destroy
+    # - syntax
     - create
     - converge
-    # - idempotence
+    - idempotence
     # - verify
     - destroy

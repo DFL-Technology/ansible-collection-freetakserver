@@ -9,9 +9,11 @@ galaxy_info:
   license: license (EPL-2.0)
   min_ansible_version: 2.1
   platforms:
-    - name: Debian
+    - name: Ubuntu
       versions:
-      - all
+      - 16.04
+      - 18.04
+      - 20.04
   galaxy_tags:
     - freetakserver
     - tak

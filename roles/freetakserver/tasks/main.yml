@@ -1,6 +1,5 @@
 ---
-- name: Install FreeTAKServer
-  import_tasks: install.yml
-  tags:
-    - freetakserver
-    - install_freetakserver
+- name: Set up FreeTAKServer on Ubuntu.
+  include_tasks: setup-Ubuntu.yml
+  when:
+    - ansible_distribution == 'Ubuntu'

@@ -3,9 +3,6 @@
   hosts: all
   gather_facts: yes
   tasks:
-    - name: Get IPv4
-      debug:
-        var: ansible_default_ipv4.address
     - name: Include freetakserver
       include_role:
         name: freetakserver
