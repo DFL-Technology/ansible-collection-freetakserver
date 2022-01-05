@@ -11,7 +11,6 @@ Addresses:
   FTS_API_PORT: 19023
   FTS_FED_PORT: 9000
   FTS_API_ADDRESS: {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}
- }}
 FileSystem:
   FTS_DB_PATH: /opt/FreeTAKServer.db
   FTS_COT_TO_DB: True
