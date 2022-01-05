@@ -1,21 +1,30 @@
 ---
+# fts_ui_install_method: pip
+fts_ui_install_method: repo
+
+# custom setup commands
+fts_ui_uninstall: false
+fts_ui_force_install: false
+fts_ui_upgrade: false
+
 # System information
-ip_address: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
-fts_ui_ip_address: "{{ ip_address }}"
+fts_ui_ip_address: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
 
 # Python configuration
 python3_version: 3.8
-python3: "python{{ python3_version }}"
+python3: "/usr/bin/python{{ python3_version }}"
 venv_path: "{{ ansible_env.HOME }}/.env"
 
 # FreeTAKServer-UI release information
 fts_ui_repo_url: https://github.com/FreeTAKTeam/UI.git
-fts_ui_release_version: v1.9.8
-fts_ui_repo_path: /opt/FreeTAKServer-UI
+fts_ui_version: 1.9.8
 
-# FreeTAKServer configuration
-fts_packages_path: "/usr/local/lib/{{ python3 }}/dist-packages/FreeTAKServer"
+# Set initial service state. 
+# Recommended values: `started` or `stopped`.
+fts_ui_state: started
 
-# FreeTAKServer-UI configuration
-fts_ui_package_path: "/usr/local/lib/{{ python3_version }}/dist-packages/FreeTAKServer-UI"
-fts_ui_websocket_key: 
+# Enable service. 
+# Recommended values: `yes` or `no`
+fts_ui_enabled: yes 
+
+fts_ui_secret_key: secret_key

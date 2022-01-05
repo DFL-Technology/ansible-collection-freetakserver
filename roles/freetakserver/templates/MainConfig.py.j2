@@ -15,7 +15,7 @@ class MainConfig:
 
     yaml_path = str(os.environ.get('FTS_CONFIG_PATH', '/opt/FTSConfig.yaml'))
 
-    python_version = 'python{{ python3_version }}'
+    python_version = 'python{{ python3_version | string }}'
 
     userpath = '/usr/local/lib/'
 

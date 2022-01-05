@@ -11,13 +11,13 @@ class Config(object):
 
     basedir    = os.path.abspath(os.path.dirname(__file__))
 
-    SECRET_KEY = 'key'
+    SECRET_KEY = '{{ fts_ui_secret_key }}'
 
     # This will connect to the FTS db
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + '/opt/FTSServer-UI.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + '{{ fts_ui_sqlachemy_db_uri }}'
 
     # certificates path
-    certpath = "{{ fts_packages_path }}/certs/"
+    certpath = "{{ fts_ui_packages_path }}/certs/"
 
     # crt file path
     crtfilepath = f"{certpath}pubserver.pem"
@@ -26,16 +26,16 @@ class Config(object):
     keyfilepath = f"{certpath}pubserver.key.unencrypted"
 
     # this IP will be used to connect with the FTS API
-    IP = {{ fts_ui_ip_address | default(ip_address) }}
+    IP = '{{ fts_ui_ip_address | default(ip_address) }}'
 
     # Port the  UI uses to communicate with the API
     PORT = '19023'
 
     # the public IP your server is exposing
-    APPIP = {{ fts_ui_ip_address | default(ip_address) }}
+    APPIP = '{{ fts_ui_ip_address | default(ip_address) }}'
 
     # webmap IP
-    WEBMAPIP = {{ fts_ui_ip_address | default(ip_address) }}
+    WEBMAPIP = '{{ fts_ui_ip_address | default(ip_address) }}'
 
     # webmap port
     WEBMAPPORT = 8000

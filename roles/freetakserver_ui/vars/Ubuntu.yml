@@ -1,0 +1,10 @@
+---
+fts_ui_repo_path: /opt/FreeTAKServer-UI
+fts_ui_sqlachemy_db_uri: /opt/FTSServer-UI.db
+
+fts_ui_packages_prefix: "/usr/local/lib/python{{ python3_version }}"
+fts_ui_packages_path: "{{ fts_packages_prefix }}/dist-packages/FreeTAKServer-UI"
+
+fts_ui_apt_dependencies:
+  - git
+  - netbase

@@ -7,5 +7,9 @@
 - name: enable freetakserver
   service:
     name: freetakserver
-    state: "{{ fts_state }}"
     enabled: "{{ fts_enabled }}"
+
+- name: set freetakserver state
+  service:
+    name: freetakserver
+    state: "{{ fts_state }}"

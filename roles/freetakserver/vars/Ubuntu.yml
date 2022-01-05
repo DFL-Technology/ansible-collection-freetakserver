@@ -6,6 +6,7 @@ fts_packages_prefix: "/usr/local/lib/python{{ python3_version }}"
 fts_packages_path: "{{ fts_packages_prefix }}/dist-packages/FreeTAKServer"
 
 fts_apt_dependencies:
+  - netbase
   - git
   - libcairo2-dev
 

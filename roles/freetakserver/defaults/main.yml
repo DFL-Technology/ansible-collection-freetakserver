@@ -1,19 +1,23 @@
 ---
+# install source: possible values are 'pip' or 'repo' (mutually exclusive)
+# fts_install_method: pip
+fts_install_method: repo
+
 # custom setup commands
 fts_uninstall: false
 fts_force_install: false
+fts_upgrade: false
 
-# install source: possible values are 'pip' or 'repo' (mutually exclusive)
-fts_install_method: pip
-# fts_install_method: repo
-
-# Set python3.X version.
+# configure python3
 python3_version: 3.8
 python3: "/usr/bin/python{{ python3_version }}"
 venv_path: "{{ ansible_env.HOME }}/.env"
 
 # system information
 fts_ip_address: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
+fts_federation_keypass: demopassfed
+fts_client_cert_password: demopasscert
+fts_websocket_key: YourWebsocketKey
 
 # repo information
 fts_repo_url: https://github.com/FreeTAKTeam/FreeTakServer.git
@@ -23,8 +27,10 @@ fts_version: 1.9.8
 fts_connection_message: FreeTAKServer
 fts_first_start: false
 
-# Set initial service state. Recommended values: `started` or `stopped`.
+# Set initial service state. 
+# Recommended values: `started` or `stopped`.
 fts_state: started
 
-# Set initial apache service status. Recommended values: `yes` or `no`
+# Enable service. 
+# Recommended values: `yes` or `no`
 fts_enabled: yes

@@ -18,11 +18,8 @@ galaxy_info:
       - 20.04
   galaxy_tags:
     - freetakserver
-    - freetakserver-ui
-    - takserver-ui
+    - takserver
     - tak
-    - tak-ui
     - userinterface
     - ui
     - atak
-

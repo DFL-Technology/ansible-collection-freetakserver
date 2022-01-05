@@ -1,5 +1,5 @@
 ---
-- name: Check if FreeTAKServer is installed.
+- name: Check if FreeTAKServer is installed
   shell: >
     set -o pipefail &&
     {{ pip3 }} list |
@@ -11,9 +11,8 @@
   changed_when: false
   ignore_errors: yes
 
-- name: Install FreeTAKServer.
+- name: Install FreeTAKServer
   block:
-
   - name: Update apt cache.
     apt:
       update_cache: true
@@ -22,24 +21,24 @@
     retries: 5
     until: update is success
 
-  - name: Install freetakserver apt dependencies.
+  - name: Install FreeTAKServer apt dependencies
     apt:
       name: "{{ fts_apt_dependencies | list }}"
       state: present
 
-  - name: "Install freetakserver pip{{ python3_version }} dependencies."
+  - name: "Install FreeTAKServer pip{{ python3_version }} dependencies"
     pip:
       name: "{{ fts_pip3_dependencies | list }}"
       executable: "pip{{ python3_version }}"
 
-  - name: Clone freetakserver repository.
+  - name: Clone FreeTAKServer repository
     git:
       repo: "{{ fts_repo_url }}"
       dest: "{{ fts_repo_path }}"
       version: "v{{ fts_version }}"
       force: true
 
-  - name: Install freetakserver.
+  - name: Install FreeTAKServer
     pip:
       name: "{{ fts_repo_path }}"
       executable: "pip{{ python3_version }}"

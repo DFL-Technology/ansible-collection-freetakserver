@@ -7,7 +7,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart={{ python3 }} -m FreeTAKServer.run
+ExecStart={{ python3 }} -m FreeTAKServer-UI.run
 
 [Install]
 WantedBy=multi-user.target

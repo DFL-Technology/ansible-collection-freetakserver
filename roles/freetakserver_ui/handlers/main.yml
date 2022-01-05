@@ -3,3 +3,13 @@
   service:
     name: freetakserver_ui
     state: reloaded
+
+- name: enable freetakserver_ui
+  service:
+    name: freetakserver_ui
+    enabled: "{{ fts_ui_enabled }}"
+
+- name: set freetakserver_ui state
+  service:
+    name: freetakserver_ui
+    state: "{{ fts_ui_state }}"

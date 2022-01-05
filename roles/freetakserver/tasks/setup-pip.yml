@@ -1,5 +1,5 @@
 ---
-- name: Install freetakserver from pip.
+- name: "Install FreeTAKServer from pip{{ python3_version }}"
   pip:
     name: FreeTAKServer
     executable: "pip{{ python3_version }}"

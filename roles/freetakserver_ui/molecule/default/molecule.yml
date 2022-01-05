@@ -1,16 +1,28 @@
 ---
 dependency:
   name: galaxy
+
 driver:
   name: docker
+
 platforms:
   - name: freetakserver_ui
     image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest
+    network_mode: host
     privileged: true
     pre_build_image: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     command: /usr/sbin/init
+    port_bindings:
+      5000: 5000,
+      8080: 8080,
+      8087: 8087,
+      8089: 8089,
+      8443: 8443,
+      8446: 8446,
+      19023: 19023
+
 provisioner:
   name: ansible
   become: yes
@@ -19,9 +31,35 @@ provisioner:
     vvv: true
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+
 verifier:
   name: ansible
+
 lint: |
   set -e
   yamllint .
   ansible-lint .
+
+scenario:
+  create_sequence:
+    - create
+  check_sequence:
+    - destroy
+    - create
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - create
+    - converge
+  destroy_sequence:
+    - destroy
+  test_sequence:
+    - lint
+    # - destroy
+    # - syntax
+    - create
+    - converge
+    - idempotence
+    # - verify
+    - destroy

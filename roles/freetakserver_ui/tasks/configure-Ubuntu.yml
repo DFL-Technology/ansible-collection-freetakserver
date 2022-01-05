@@ -2,7 +2,7 @@
 - name: Template config.py config file.
   template:
     src: config.py.j2
-    dest: '{{ fts_ui_install_path }}/config.py'
+    dest: '{{ fts_ui_packages_path }}/config.py'
     mode: 0644
 
 - name: Copy systemctl replacement workaround.
@@ -16,4 +16,7 @@
     src: freetakserver_ui.service.j2
     dest: /lib/systemd/system/freetakserver_ui.service
     mode: 0644
-  notify: reload freetakserver_ui
+  notify: 
+    - reload freetakserver_ui
+    - enable freetakserver_ui
+    - set freetakserver_ui state

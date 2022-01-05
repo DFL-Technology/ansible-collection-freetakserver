@@ -1,0 +1,5 @@
+---
+- name: "Install FreeTAKServer-UI from pip{{ python3_version }}"
+  pip:
+    name: FreeTAKServer-UI
+    executable: "pip{{ python3_version }}"

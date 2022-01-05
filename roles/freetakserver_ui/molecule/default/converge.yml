@@ -2,12 +2,7 @@
 - name: Converge
   hosts: all
   become: yes
-  pre_tasks:
-    - name: Install netbase to get IP information
-      package:
-        name: netbase
-        state: present
   roles:
     - python3
     - freetakserver
-    - freetakserver-ui
+    - freetakserver_ui

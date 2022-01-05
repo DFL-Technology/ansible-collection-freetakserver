@@ -2,20 +2,24 @@
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_distribution }}.yml"
 
-- name: Uninstall FreeTAKServer-UI.
+- name: Uninstall FreeTAKServer-UI
   pip:
-    name: FreeTAKServer[ui]
+    name: FreeTAKServer-UI
     state: absent
     executable: "pip{{ python3_version }}"
-  when: fts_ui_uninstall
+  when: fts_ui_uninstall or fts_ui_upgrade
 
-- name: Set up FreeTAKServer with repository.
-  include_tasks: "setup-{{ ansible_distribution }}.yml"
-  when: "fts_install_method == 'repo'"
+- name: Install FreeTAKServer-UI
+  block:
+    - name: Set up FreeTAKServe-UI with repository
+      include_tasks: "setup-{{ ansible_distribution }}.yml"
+      when: fts_ui_install_method == 'repo'
 
-- name: Set up FreeTAKServer-UI with pip.
-  include_tasks: setup-pip.yml
-  when: "fts_install_method == 'pip'"
+    - name: Set up FreeTAKServer-UI with pip
+      include_tasks: setup-pip.yml
+      when: fts_ui_install_method == 'pip'
 
-- name: Configure FreeTAKServer-UI.
-  include_tasks: "configure-{{ ansible_distribution }}.yml"
+    - name: Configure FreeTAKServer-UI
+      include_tasks: "configure-{{ ansible_distribution }}.yml"
+
+  when: not fts_ui_uninstall
