@@ -17,6 +17,6 @@
     dest: /lib/systemd/system/freetakserver_ui.service
     mode: 0644
   notify: 
-    - reload freetakserver_ui
+    # - reload freetakserver_ui
     - enable freetakserver_ui
     - set freetakserver_ui state

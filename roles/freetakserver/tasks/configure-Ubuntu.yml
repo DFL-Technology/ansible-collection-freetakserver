@@ -23,6 +23,6 @@
     dest: /lib/systemd/system/freetakserver.service
     mode: 0644
   notify:
-    - reload freetakserver
+    # - reload freetakserver
     - enable freetakserver
     - set freetakserver state
