@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - dfl_technology.python3
+  - python3
 galaxy_info:
   namespace: dfl_technology
   role_name: freetakserver
