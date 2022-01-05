@@ -14,6 +14,6 @@
       include_role:
         name: freetakserver
 
-    # - name: Include FreeTAKServer-UI
-    #   include_role:
-    #     name: freetakserver-ui
+    - name: Include FreeTAKServer-UI
+      include_role:
+        name: freetakserver-ui

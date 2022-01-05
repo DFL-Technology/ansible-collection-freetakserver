@@ -1,3 +1,0 @@
----
-- name: Cleanup
-  hosts: all

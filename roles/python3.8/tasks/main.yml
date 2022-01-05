@@ -1,4 +1,0 @@
----
-- name: Install Python 3.8.0
-  import_tasks: install.yml
-  tags: python3.8

@@ -1,12 +1,10 @@
 ---
-dependencies:
-  - dfl_technology.common
-  - dfl_technology.python3
+dependencies: []
 galaxy_info:
   namespace: dfl_technology
-  role_name: freetakserver
+  role_name: common
   author: jonaugustine
-  description: FreeTAKServer Ansible Role
+  description: Shared role for FreeTAKServer
   company: DFL-Technology
   license: license (EPL-2.0)
   min_ansible_version: 2.1
@@ -21,3 +19,4 @@ galaxy_info:
     - atak
     - tak
     - takserver
+    - common

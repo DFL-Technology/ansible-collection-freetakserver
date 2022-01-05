@@ -1,23 +1,18 @@
 ---
 dependencies:
   - dfl_technology.common
-  - dfl_technology.python3
 galaxy_info:
   namespace: dfl_technology
-  role_name: freetakserver
+  role_name: python3
   author: jonaugustine
-  description: FreeTAKServer Ansible Role
+  description: Python 3 Ansible Role
   company: DFL-Technology
   license: license (EPL-2.0)
   min_ansible_version: 2.1
   platforms:
-    - name: Ubuntu
+    - name: Debian
       versions:
-      - 16.04
-      - 18.04
-      - 20.04
+      - all
   galaxy_tags:
-    - freetakserver
-    - atak
-    - tak
-    - takserver
+    - python
+    - python3

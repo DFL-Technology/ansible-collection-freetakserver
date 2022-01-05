@@ -1,6 +1,0 @@
----
-- name: Install FreeTAKServer-UI
-  import_tasks: install.yml
-  tags:
-    - freetakserver-ui
-    - install_freetakserver-ui

@@ -1,0 +1,22 @@
+---
+- name: Update apt packages.
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  register: update
+  retries: 5
+  until: update is success
+
+- name: Install shared apt dependencies.
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - netbase
+    - git
+
+- name: Copy systemctl replacement workaround.
+  copy:
+    src: systemctl3.py
+    dest: /usr/local/bin/systemctl
+    mode: 0755

@@ -1,14 +1,20 @@
 ---
+# System information
+ip_address: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
+fts_ip_address: "{{ ip_address }}"
+
 # Python configuration
-fts_python_version: 3.8
-fts_python: "python{{ fts_python_version }}"
+python3_version: 3.8
+python3: "python{{ python3_version }}"
+pip3: "pip{{ python3_version }}"
+venv_path: "{{ ansible_env.HOME }}/.env"
+
+# FreeTAKServer release information
+fts_repo_url: https://github.com/FreeTAKTeam/FreeTakServer.git
+fts_release_version: v1.9.8
+fts_repo_path: /opt/FreeTAKServer
 
 # FreeTAKServer configuration
-fts_repo_url: https://github.com/FreeTAKTeam/FreeTakServer.git
-fts_pip_install_url: https://bootstrap.pypa.io/get-pip.py
-fts_release_version: v1.9.8
-fts_package_path: "/usr/local/lib/{{ fts_python }}/dist-packages/FreeTAKServer"
-fts_repo_path: /opt/FreeTAKServer
+fts_package_path: "/usr/local/lib/{{ python3 }}/dist-packages/FreeTAKServer"
 fts_connection_message: FreeTAKServer
-fts_venv_path: "{{ fts_repo_path }}/.env"
 fts_first_start: False

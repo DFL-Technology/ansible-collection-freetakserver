@@ -5,6 +5,18 @@
   become: yes
   gather_facts: yes
   tasks:
-    - name: Include freetakserver
+    - name: Include common
+      include_role:
+        name: common
+
+    - name: Include python3
+      include_role:
+        name: python3
+
+    - name: Include FreeTAKServer
       include_role:
         name: freetakserver
+
+    - name: Include FreeTAKServer-UI
+      include_role:
+        name: freetakserver-ui

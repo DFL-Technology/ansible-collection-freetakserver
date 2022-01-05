@@ -1,7 +1,0 @@
-#!/bin/bash
-
-source "{{ fts_repo_path }}/.env/bin/activate"
-
-# Start the server and its dependencies
-{{ fts_python_version }} -m FreeTAKServer.controllers.services.FTS
-{{ fts_python_version }} -m FreeTAKServer-UI.run

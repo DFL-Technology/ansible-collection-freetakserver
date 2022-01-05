@@ -1,70 +1,25 @@
 ---
-- name: Update apt packages.
-  apt:
-    update_cache: yes
-    cache_valid_time: 86400
-  register: update
-  retries: 5
-  until: update is success
-
 - name: Install FreeTAKServer apt dependencies.
   package:
     name: "{{ item }}"
     state: present
   loop:
-    - netbase
-    - git
-    - python3.8
-    - python3-distutils
-    - python3-setuptools
-    - build-essential
-    - python3.8-dev
     - libcairo2-dev
 
-- name: "Check if pip{{ fts_python_version }} is installed."
-  stat:
-    path: "/usr/local/bin/pip{{ fts_python_version }}"
-  register: pip_executable
-
-- name: "Install pip{{ fts_python_version }}."
-  block:
-    - name: Download get-pip.py.
-      get_url:
-        url: "{{ fts_pip_install_url }}"
-        dest: /tmp
-        mode: 0644
-      when: not pip_executable.stat.exists
-
-    - name: "Install pip{{ fts_python_version }}."
-      command: "{{ fts_python }} /tmp/get-pip.py"
-      changed_when: false
-
-    - name: "Upgrade pip{{ fts_python_version }}."
-      command: pip3 install --upgrade pip
-      changed_when: false
-
-  when: not pip_executable.stat.exists
-
-- name: Install pip dependencies.
-  command: "pip{{ fts_python_version }} install --force-reinstall --ignore-installed {{ item }}"
+- name: "Install FreeTAKServer {{ pip3 }} dependencies."
+  pip:
+    name: "{{ item }}"
+    executable: "{{ pip3 }}"
   loop:
-    - virtualenv
-    - lxml
     - pycairo
     - gevent
     - greenlet
-  changed_when: false
-
-- name: Copy systemctl replacement workaround.
-  copy:
-    src: systemctl3.py
-    dest: /usr/local/bin/systemctl
-    mode: 0755
+    - lxml
 
 - name: Check if FreeTAKServer is installed.
   shell: >
     set -o pipefail &&
-    pip{{ fts_python_version }} list |
+    {{ pip3 }} list |
     grep FreeTAKServer
   args:
     warn: no
@@ -77,13 +32,13 @@
   pip:
     name: FreeTAKServer
     state: absent
-    executable: pip3
+    executable: "{{ pip3 }}"
   when:
     - uninstall_fts is defined
     - uninstall_fts
     - result.stdout | length > 0
 
-- name: Install FreeTAKServer
+- name: Install FreeTAKServer.
   block:
     - name: Clone FreeTAKServer repository.
       git:
@@ -95,7 +50,7 @@
     - name: Install FreeTAKServer.
       pip:
         name: "{{ fts_repo_path }}"
-        executable: "pip{{ fts_python_version }}"
+        executable: "{{ pip3 }}"
 
     - name: Template MainConfig.py config file.
       template:

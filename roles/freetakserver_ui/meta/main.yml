@@ -2,11 +2,12 @@
 dependencies:
   - dfl_technology.common
   - dfl_technology.python3
+  - dfl_technology.freetakserver
 galaxy_info:
   namespace: dfl_technology
-  role_name: freetakserver
+  role_name: freetakserver_ui
   author: jonaugustine
-  description: FreeTAKServer Ansible Role
+  description: FreeTAKServer-UI Ansible Role
   company: DFL-Technology
   license: license (EPL-2.0)
   min_ansible_version: 2.1
@@ -18,6 +19,11 @@ galaxy_info:
       - 20.04
   galaxy_tags:
     - freetakserver
-    - atak
+    - freetakserver-ui
+    - takserver-ui
     - tak
-    - takserver
+    - tak-ui
+    - userinterface
+    - ui
+    - atak
+

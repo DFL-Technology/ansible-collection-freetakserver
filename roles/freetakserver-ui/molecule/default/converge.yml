@@ -1,7 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: "Include freetakserver-ui"
-      include_role:
-        name: "freetakserver-ui"

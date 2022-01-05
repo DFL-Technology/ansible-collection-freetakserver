@@ -1,0 +1,7 @@
+---
+- name: systemctl daemon_reload
+  service:
+    name: freetakserver_ui
+    enabled: yes
+    state: restarted
+    daemon_reload: true

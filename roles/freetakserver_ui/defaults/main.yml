@@ -1,0 +1,21 @@
+---
+# System information
+ip_address: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
+fts_ui_ip_address: "{{ ip_address }}"
+
+# Python configuration
+python3_version: 3.8
+python3: "python{{ python3_version }}"
+venv_path: "{{ ansible_env.HOME }}/.env"
+
+# FreeTAKServer-UI release information
+fts_ui_repo_url: https://github.com/FreeTAKTeam/UI.git
+fts_ui_release_version: v1.9.8
+fts_ui_repo_path: /opt/FreeTAKServer-UI
+
+# FreeTAKServer configuration
+fts_package_path: "/usr/local/lib/{{ python3 }}/dist-packages/FreeTAKServer"
+
+# FreeTAKServer-UI configuration
+fts_ui_package_path: "/usr/local/lib/{{ python3_version }}/dist-packages/FreeTAKServer-UI"
+fts_ui_websocket_key: 

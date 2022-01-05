@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: freetakserver
+  - name: freetakserver_ui
     image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest
     privileged: true
     pre_build_image: true

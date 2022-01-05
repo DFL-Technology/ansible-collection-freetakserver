@@ -1,0 +1,45 @@
+---
+- name: Check if FreeTAKServer-UI is installed.
+  shell: >
+    set -o pipefail &&
+    {{ pip3 }} list |
+    grep FreeTAKServer-UI
+  args:
+    warn: no
+    executable: /bin/bash
+  register: result
+  changed_when: false
+  ignore_errors: yes
+
+- name: Uninstall any previous FreeTAKServer-UI installations.
+  pip:
+    name: FreeTAKServer-UI
+    state: absent
+    executable: "{{ pip3 }}"
+  when:
+    - uninstall_fts_ui is defined
+    - uninstall_fts_ui
+    - result.stdout | length > 0
+
+- name: Install FreeTAKServer-UI
+  block:
+    - name: Clone FreeTAKServer-UI repository.
+      git:
+        repo: "{{ fts_ui_repo_url }}"
+        dest: "{{ fts_ui_repo_path }}"
+        version: "{{ fts_ui_version }}"
+        force: yes
+
+    - name: Install FreeTAKServer-UI.
+      pip:
+        name: "{{ fts_ui_repo_path }}"
+        executable: "{{ pip3 }}"
+
+    - name: Template FreeTAKServer-UI systemd unit file.
+      template:
+        src: freetakserver_ui.service.j2
+        dest: /lib/systemd/system/freetakserver_ui.service
+        mode: 0644
+      notify: systemctl daemon_reload
+
+  when: result.stdout | length == 0
