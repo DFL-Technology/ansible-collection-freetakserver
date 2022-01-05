@@ -16,5 +16,6 @@ galaxy_info:
       - 20.04
   galaxy_tags:
     - freetakserver
+    - atak
     - tak
     - takserver
