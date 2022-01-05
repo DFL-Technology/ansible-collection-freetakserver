@@ -6,7 +6,7 @@ driver:
   name: docker
 
 platforms:
-  - name: freetakserver_ui
+  - name: freetakserver
     image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest
     network_mode: host
     privileged: true
@@ -35,10 +35,10 @@ provisioner:
 verifier:
   name: ansible
 
-lint: |
-  set -e
-  yamllint .
-  ansible-lint .
+# lint: |
+#   set -e
+#   yamllint .
+#   ansible-lint .
 
 scenario:
   create_sequence:
@@ -55,7 +55,7 @@ scenario:
   destroy_sequence:
     - destroy
   test_sequence:
-    - lint
+    # - lint
     # - destroy
     # - syntax
     - create
