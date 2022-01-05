@@ -1,8 +1,0 @@
----
-- name: Set up FreeTAKServer shared tasks for Ubuntu.
-  include_tasks: setup-Ubuntu.yml
-  when:
-    - ansible_distribution == 'Ubuntu'
-  tags:
-  - ubuntu
-  - common

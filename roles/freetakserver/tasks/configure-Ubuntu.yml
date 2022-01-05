@@ -1,0 +1,27 @@
+---
+- name: Template MainConfig.py config file.
+  template:
+    src: MainConfig.py.j2
+    dest: '{{ fts_packages_path }}/controllers/configuration/MainConfig.py'
+    mode: 0644
+
+- name: Template FTSConfig.yaml config file.
+  template:
+    src: FTSConfig.yaml.j2
+    dest: "{{ fts_config_path }}"
+    mode: 0644
+
+- name: Copy systemctl replacement workaround.
+  copy:
+    src: systemctl3.py
+    dest: /usr/local/bin/systemctl
+    mode: 0755
+
+- name: Template freetakserver.service unit file.
+  template:
+    src: freetakserver.service.j2
+    dest: /lib/systemd/system/freetakserver.service
+    mode: 0644
+  notify:
+    - reload freetakserver
+    - enable freetakserver

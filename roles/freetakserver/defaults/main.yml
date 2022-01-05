@@ -1,20 +1,30 @@
 ---
-# System information
-ip_address: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
-fts_ip_address: "{{ ip_address }}"
+# custom setup commands
+fts_uninstall: false
+fts_force_install: false
 
-# Python configuration
+# install source: possible values are 'pip' or 'repo' (mutually exclusive)
+fts_install_method: pip
+# fts_install_method: repo
+
+# Set python3.X version.
 python3_version: 3.8
-python3: "python{{ python3_version }}"
-pip3: "pip{{ python3_version }}"
+python3: "/usr/bin/python{{ python3_version }}"
 venv_path: "{{ ansible_env.HOME }}/.env"
 
-# FreeTAKServer release information
-fts_repo_url: https://github.com/FreeTAKTeam/FreeTakServer.git
-fts_release_version: v1.9.8
-fts_repo_path: /opt/FreeTAKServer
+# system information
+fts_ip_address: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
 
-# FreeTAKServer configuration
-fts_package_path: "/usr/local/lib/{{ python3 }}/dist-packages/FreeTAKServer"
+# repo information
+fts_repo_url: https://github.com/FreeTAKTeam/FreeTakServer.git
+fts_version: 1.9.8
+
+# server configuration
 fts_connection_message: FreeTAKServer
-fts_first_start: False
+fts_first_start: false
+
+# Set initial service state. Recommended values: `started` or `stopped`.
+fts_state: started
+
+# Set initial apache service status. Recommended values: `yes` or `no`
+fts_enabled: yes

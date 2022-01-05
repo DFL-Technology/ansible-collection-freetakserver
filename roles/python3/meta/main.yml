@@ -1,6 +1,5 @@
 ---
-dependencies:
-  - dfl_technology.common
+dependencies: []
 galaxy_info:
   namespace: dfl_technology
   role_name: python3
@@ -10,7 +9,7 @@ galaxy_info:
   license: license (EPL-2.0)
   min_ansible_version: 2.1
   platforms:
-    - name: Debian
+    - name: Ubuntu
       versions:
       - all
   galaxy_tags:

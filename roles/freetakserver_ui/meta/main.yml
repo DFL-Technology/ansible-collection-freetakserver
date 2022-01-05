@@ -1,6 +1,5 @@
 ---
 dependencies:
-  - dfl_technology.common
   - dfl_technology.python3
   - dfl_technology.freetakserver
 galaxy_info:

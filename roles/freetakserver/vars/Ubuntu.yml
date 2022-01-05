@@ -1,0 +1,15 @@
+---
+fts_repo_path: /opt/FreeTAKServer
+fts_config_path: /opt/MainConfig.yaml
+
+fts_packages_prefix: "/usr/local/lib/python{{ python3_version }}"
+fts_packages_path: "{{ fts_packages_prefix }}/dist-packages/FreeTAKServer"
+
+fts_apt_dependencies:
+  - git
+  - libcairo2-dev
+
+fts_pip3_dependencies:
+  - pycairo
+  - gevent
+  - lxml

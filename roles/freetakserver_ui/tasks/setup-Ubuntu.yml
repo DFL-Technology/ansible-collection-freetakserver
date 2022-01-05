@@ -9,7 +9,7 @@
     executable: /bin/bash
   register: result
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Uninstall any previous FreeTAKServer-UI installations.
   pip:
@@ -28,7 +28,7 @@
         repo: "{{ fts_ui_repo_url }}"
         dest: "{{ fts_ui_repo_path }}"
         version: "{{ fts_ui_version }}"
-        force: yes
+        force: true
 
     - name: Install FreeTAKServer-UI.
       pip:

@@ -17,7 +17,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + '/opt/FTSServer-UI.db'
 
     # certificates path
-    certpath = "{{ fts_package_path }}/certs/"
+    certpath = "{{ fts_packages_path }}/certs/"
 
     # crt file path
     crtfilepath = f"{certpath}pubserver.pem"

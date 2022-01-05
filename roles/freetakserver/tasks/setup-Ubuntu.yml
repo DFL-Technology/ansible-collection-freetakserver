@@ -1,21 +1,4 @@
 ---
-- name: Install FreeTAKServer apt dependencies.
-  package:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - libcairo2-dev
-
-- name: "Install FreeTAKServer {{ pip3 }} dependencies."
-  pip:
-    name: "{{ item }}"
-    executable: "{{ pip3 }}"
-  loop:
-    - pycairo
-    - gevent
-    - greenlet
-    - lxml
-
 - name: Check if FreeTAKServer is installed.
   shell: >
     set -o pipefail &&
@@ -28,47 +11,37 @@
   changed_when: false
   ignore_errors: yes
 
-- name: Uninstall any previous FreeTAKServer installations.
-  pip:
-    name: FreeTAKServer
-    state: absent
-    executable: "{{ pip3 }}"
-  when:
-    - uninstall_fts is defined
-    - uninstall_fts
-    - result.stdout | length > 0
-
 - name: Install FreeTAKServer.
   block:
-    - name: Clone FreeTAKServer repository.
-      git:
-        repo: "{{ fts_repo_url }}"
-        dest: "{{ fts_repo_path }}"
-        version: "{{ fts_release_version }}"
-        force: yes
 
-    - name: Install FreeTAKServer.
-      pip:
-        name: "{{ fts_repo_path }}"
-        executable: "{{ pip3 }}"
+  - name: Update apt cache.
+    apt:
+      update_cache: true
+      cache_valid_time: 86400
+    register: update
+    retries: 5
+    until: update is success
 
-    - name: Template MainConfig.py config file.
-      template:
-        src: MainConfig.py.j2
-        dest: '{{ fts_repo_path }}/FreeTAKServer/controllers/configuration/MainConfig.py'
-        mode: 0644
+  - name: Install freetakserver apt dependencies.
+    apt:
+      name: "{{ fts_apt_dependencies | list }}"
+      state: present
 
-    - name: Template FTSConfig.yml config file.
-      template:
-        src: FTSConfig.yml.j2
-        dest: /opt/FTSConfig.yml
-        mode: 0644
+  - name: "Install freetakserver pip{{ python3_version }} dependencies."
+    pip:
+      name: "{{ fts_pip3_dependencies | list }}"
+      executable: "pip{{ python3_version }}"
 
-    - name: Template FreeTAKServer systemd unit file.
-      template:
-        src: freetakserver.service.j2
-        dest: /lib/systemd/system/freetakserver.service
-        mode: 0644
-      notify: systemctl daemon_reload
+  - name: Clone freetakserver repository.
+    git:
+      repo: "{{ fts_repo_url }}"
+      dest: "{{ fts_repo_path }}"
+      version: "v{{ fts_version }}"
+      force: true
 
-  when: result.stdout | length == 0
+  - name: Install freetakserver.
+    pip:
+      name: "{{ fts_repo_path }}"
+      executable: "pip{{ python3_version }}"
+
+  when: (result.stdout | length == 0) or fts_force_install

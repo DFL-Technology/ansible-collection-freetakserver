@@ -1,8 +1,21 @@
 ---
-- name: Set up FreeTAKServer-UI on Ubuntu.
-  include_tasks: setup-Ubuntu.yml
-  when:
-    - ansible_distribution == 'Ubuntu'
-  tags:
-  - ubuntu
-  - freetakserver_ui
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: Uninstall FreeTAKServer-UI.
+  pip:
+    name: FreeTAKServer[ui]
+    state: absent
+    executable: "pip{{ python3_version }}"
+  when: fts_ui_uninstall
+
+- name: Set up FreeTAKServer with repository.
+  include_tasks: "setup-{{ ansible_distribution }}.yml"
+  when: "fts_install_method == 'repo'"
+
+- name: Set up FreeTAKServer-UI with pip.
+  include_tasks: setup-pip.yml
+  when: "fts_install_method == 'pip'"
+
+- name: Configure FreeTAKServer-UI.
+  include_tasks: "configure-{{ ansible_distribution }}.yml"

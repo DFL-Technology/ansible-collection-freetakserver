@@ -3,12 +3,8 @@
   hosts: localhost
   connection: local
   become: yes
-  gather_facts: yes
+  gather_facts: true
   tasks:
-    - name: Include common
-      include_role:
-        name: common
-
     - name: Include python3
       include_role:
         name: python3

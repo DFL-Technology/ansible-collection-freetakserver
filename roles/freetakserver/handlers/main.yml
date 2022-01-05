@@ -1,7 +1,11 @@
 ---
-- name: systemctl daemon_reload
+- name: reload freetakserver
   service:
     name: freetakserver
-    enabled: yes
-    state: restarted
-    daemon_reload: true
+    state: reloaded
+
+- name: enable freetakserver
+  service:
+    name: freetakserver
+    state: "{{ fts_state }}"
+    enabled: "{{ fts_enabled }}"

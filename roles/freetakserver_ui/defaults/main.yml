@@ -14,7 +14,7 @@ fts_ui_release_version: v1.9.8
 fts_ui_repo_path: /opt/FreeTAKServer-UI
 
 # FreeTAKServer configuration
-fts_package_path: "/usr/local/lib/{{ python3 }}/dist-packages/FreeTAKServer"
+fts_packages_path: "/usr/local/lib/{{ python3 }}/dist-packages/FreeTAKServer"
 
 # FreeTAKServer-UI configuration
 fts_ui_package_path: "/usr/local/lib/{{ python3_version }}/dist-packages/FreeTAKServer-UI"

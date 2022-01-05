@@ -1,19 +1,21 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: Include common
-      include_role:
-        name: common
+  become: yes
+  pre_tasks:
+    - name: Update apt cache.
+      apt:
+        update_cache: true
+        cache_valid_time: 86400
+      register: update
+      retries: 5
+      until: update is success
 
-    - name: Include python3
-      include_role:
-        name: python3
-
-    - name: Include FreeTAKServer
-      include_role:
-        name: freetakserver
-
-    # - name: Include FreeTAKServer-UI
-    #   include_role:
-    #     name: freetakserver-ui
+    - name: Install netbase to get IP information
+      package:
+        name: netbase
+        state: present
+  roles:
+    - python3
+    - freetakserver
+    # - freetakserver-ui
