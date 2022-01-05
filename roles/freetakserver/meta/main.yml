@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   namespace: dfl_technology
-  role_name: freetakserver
+  role_name: freetakserver-ui
   author: jonaugustine
   description: FreeTAKServer Ansible Role
   company: DFL-Technology
