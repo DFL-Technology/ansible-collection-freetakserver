@@ -4,18 +4,19 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance
+  - name: freetakserver-ui
     image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    pre_build_image: true
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    pre_build_image: true
+    command: /usr/sbin/init
 provisioner:
   name: ansible
-  log: false
+  become: yes
+  log: true
   options:
-    vvv: false
+    vvv: true
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 verifier:

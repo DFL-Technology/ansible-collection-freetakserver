@@ -1,40 +1,15 @@
 ---
-# defaults passed to ansible-playbook
-ansible:
-  timeout: 30
-  sudo: True
-  sudo_user: False
-  ask_sudo_pass: False
-  ask_vault_pass: False
-  vault_password_file: False
-  limit: all
-  verbose: False
-  diff: True
-  tags: False
-  host_key_checking: False
-  raw_ssh_args:
-    - -o UserKnownHostsFile=/dev/null
-    - -o IdentitiesOnly=yes
-    - -o ControlMaster=auto
-    - -o ControlPersist=60s
-  galaxy: {}
-  inventory_file: ansible_inventory
-  config_file: /etc/ansible/ansible.cfg
-  # playbook: ${MOLECULE_PLAYBOOK:-converge.yml}
-
-testinfra: {}
-
 dependency:
   name: galaxy
 driver:
   name: docker
 platforms:
-  - name: instance
+  - name: freetakserver-ui
     image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest
     privileged: true
+    pre_build_image: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    pre_build_image: true
     command: /usr/sbin/init
 provisioner:
   name: ansible
