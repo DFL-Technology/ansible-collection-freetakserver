@@ -13,7 +13,6 @@ platforms:
     pre_build_image: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    command: /usr/sbin/init
     port_bindings:
       5000: 5000,
       8080: 8080,
